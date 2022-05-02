@@ -1,7 +1,7 @@
 import express from "express";
 import serveIndex from "serve-index";
 
-import { api } from "./api";
+import { apiRouter } from "./api";
 
 console.log("About to start the server...");
 
@@ -14,7 +14,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/api", api);
+app.use("/api", apiRouter);
 
 app.use(express.static(wwwDir));
 app.use(serveIndex(wwwDir, { icons: true }));

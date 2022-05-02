@@ -1,7 +1,7 @@
 import { Router } from "express";
 
-export const api = Router();
+export const apiRouter = Router();
 
-api.get("/date", (req, res) => {
+apiRouter.get("/date", (req, res) => {
   res.json({ date: new Date() });
 });
