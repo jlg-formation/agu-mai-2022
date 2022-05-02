@@ -7,7 +7,7 @@ console.log("About to start the server...");
 
 const app = express();
 const port = 3000;
-const wwwDir = ".";
+const wwwDir = "../front/dist/front";
 
 app.use((req, res, next) => {
   console.log("req: ", req.url, this);
