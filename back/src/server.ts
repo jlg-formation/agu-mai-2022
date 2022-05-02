@@ -1,7 +1,7 @@
 import express from "express";
 import serveIndex from "serve-index";
 
-import api from "./api";
+import { api } from "./api";
 
 console.log("About to start the server...");
 
