@@ -3,4 +3,8 @@ main {
   flex-flow: column;
   align-items: center;
   gap: 0.5em;
+  padding: 0.5em;
+  width: 100%;
+  max-width: 50em;
+  margin: 0 auto;
 }
