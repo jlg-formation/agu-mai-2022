@@ -1,0 +1,15 @@
+div.content {
+  display: flex;
+  flex-flow: column;
+  gap: 1em;
+}
+
+nav {
+  display: flex;
+  gap: 0.3em;
+}
+
+.qty,
+.price {
+  text-align: right;
+}
