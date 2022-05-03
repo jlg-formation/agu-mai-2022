@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-add',
@@ -8,9 +8,12 @@ import { FormControl, FormGroup } from '@angular/forms';
 })
 export class AddComponent implements OnInit {
   f = new FormGroup({
-    name: new FormControl(),
-    price: new FormControl(),
-    qty: new FormControl(),
+    name: new FormControl('Tournevis', [
+      Validators.required,
+      Validators.maxLength(10),
+    ]),
+    price: new FormControl(1.23, [Validators.required]),
+    qty: new FormControl(45, [Validators.required]),
   });
 
   constructor() {}
