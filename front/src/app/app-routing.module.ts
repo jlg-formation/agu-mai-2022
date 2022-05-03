@@ -5,11 +5,11 @@ import { LegalComponent } from './routes/legal/legal.component';
 
 const routes: Routes = [
   {
-    path: '/',
+    path: '',
     component: HomeComponent,
   },
   {
-    path: '/legal',
+    path: 'legal',
     component: LegalComponent,
   },
 ];
