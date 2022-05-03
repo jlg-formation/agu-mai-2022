@@ -1,0 +1,18 @@
+form {
+  display: flex;
+  flex-flow: column;
+  gap: 0.5em;
+  width: 100%;
+  max-width: 25em;
+
+  input {
+    width: 100%;
+    padding: 0.5em 1em;
+    border: 0.1em solid #ccc;
+    border-radius: $border-radius;
+  }
+
+  button {
+    margin-top: 3em;
+  }
+}
