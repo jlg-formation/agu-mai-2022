@@ -26,11 +26,11 @@ let articles: Article[] = [
 
 export const apiRouter = Router();
 
-apiRouter.get("/date", (req, res) => {
+apiRouter.get("/date", (_req, res) => {
   res.json({ date: new Date() });
 });
 
-apiRouter.get("/articles", (req, res) => {
+apiRouter.get("/articles", (_req, res) => {
   res.json(articles);
 });
 
