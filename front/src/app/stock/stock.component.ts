@@ -5,6 +5,7 @@ import {
   faTrashCan,
 } from '@fortawesome/free-solid-svg-icons';
 import { Article } from '../interfaces/article';
+import { ArticleService } from '../services/article.service';
 
 @Component({
   selector: 'app-stock',
@@ -16,30 +17,7 @@ export class StockComponent implements OnInit {
   faPlus = faPlus;
   faTrashCan = faTrashCan;
 
-  articles: Article[] = [
-    {
-      name: 'truc',
-      price: 2.45,
-      qty: 456,
-    },
-    {
-      name: 'bidule',
-      price: 2.45,
-      qty: 456,
-    },
-    {
-      name: 'truc',
-      price: 2.45,
-      qty: 456,
-    },
-    {
-      name: 'truc',
-      price: 2.45,
-      qty: 456,
-    },
-  ];
-
-  constructor() {}
+  constructor(public articleService: ArticleService) {}
 
   ngOnInit(): void {}
 }
