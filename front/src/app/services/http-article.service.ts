@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ArticleService } from './article.service';
+import { Article } from '../interfaces/article';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,37 @@ export class HttpArticleService extends ArticleService {
     this.refresh();
   }
 
-  async refresh() {
-    this.http.get('http://localhost:3000/api/articles').subscribe();
+  override async refresh() {
+    this.http.get<Article[]>('http://localhost:3000/api/articles').subscribe({
+      next: (articles) => {
+        console.log('next', articles);
+        this.articles = articles;
+        this.save();
+      },
+      error: (err) => {
+        console.log('err: ', err);
+      },
+      complete: () => {
+        console.log('complete');
+      },
+    });
+  }
+
+  override async add(article: Article): Promise<void> {
+    await super.add(article);
+    this.http
+      .post<void>('http://localhost:3000/api/articles', article)
+      .subscribe({
+        next: () => {
+          console.log('next');
+          this.refresh();
+        },
+        error: (err) => {
+          console.log('err: ', err);
+        },
+        complete: () => {
+          console.log('complete');
+        },
+      });
   }
 }
