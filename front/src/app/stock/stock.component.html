@@ -8,7 +8,11 @@
       <button routerLink="add" aria-label="Ajouter">
         <fa-icon [icon]="faPlus"></fa-icon>
       </button>
-      <button aria-label="Supprimer" [hidden]="selectedArticles.size === 0">
+      <button
+        aria-label="Supprimer"
+        [hidden]="selectedArticles.size === 0"
+        (click)="remove()"
+      >
         <fa-icon [icon]="faTrashCan"></fa-icon>
       </button>
     </nav>
