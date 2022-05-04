@@ -14,7 +14,7 @@ export class HttpArticleService extends ArticleService {
   }
 
   override async refresh() {
-    this.http.get<Article[]>('http://localhost:3000/api/articles').subscribe({
+    this.http.get<Article[]>('/api/articles').subscribe({
       next: (articles) => {
         console.log('next', articles);
         this.articles = articles;
@@ -31,20 +31,18 @@ export class HttpArticleService extends ArticleService {
 
   override async add(article: Article): Promise<void> {
     await super.add(article);
-    this.http
-      .post<void>('http://localhost:3000/api/articles', article)
-      .subscribe({
-        next: () => {
-          console.log('next');
-          this.refresh();
-        },
-        error: (err) => {
-          console.log('err: ', err);
-        },
-        complete: () => {
-          console.log('complete');
-        },
-      });
+    this.http.post<void>('/api/articles', article).subscribe({
+      next: () => {
+        console.log('next');
+        this.refresh();
+      },
+      error: (err) => {
+        console.log('err: ', err);
+      },
+      complete: () => {
+        console.log('complete');
+      },
+    });
   }
 
   override async remove(articles: Set<Article>): Promise<void> {
@@ -53,7 +51,7 @@ export class HttpArticleService extends ArticleService {
     const ids = [...articles].map((a) => a.id);
     console.log('ids: ', ids);
     this.http
-      .delete<void>('http://localhost:3000/api/articles', {
+      .delete<void>('/api/articles', {
         headers: {
           'Content-Type': 'application/json',
         },
