@@ -6,6 +6,9 @@ import { Article } from '../interfaces/article';
 })
 export class ArticleService {
   articles = this.getArticles();
+
+  constructor() {}
+
   async add(article: Article) {
     this.articles.push(article);
     this.save();
@@ -39,9 +42,13 @@ export class ArticleService {
     }
     return JSON.parse(str);
   }
+
+  async remove(articles: Set<Article>) {
+    this.articles = this.articles.filter((a) => !articles.has(a));
+    this.save();
+  }
+
   save() {
     localStorage.setItem('articles', JSON.stringify(this.articles));
   }
-
-  constructor() {}
 }
