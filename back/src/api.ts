@@ -1,6 +1,10 @@
 import { Router, json } from "express";
 import { Article } from "./interfaces/article";
 
+const noop = () => {};
+
+noop();
+
 const generateId = () => {
   return Date.now() + "_" + Math.round(Math.random() * 1e9);
 };
