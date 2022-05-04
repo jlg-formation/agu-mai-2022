@@ -28,9 +28,15 @@ export class StockComponent implements OnInit {
   }
 
   remove() {
-    console.log('remove');
-    this.articleService.remove(this.selectedArticles);
-    this.selectedArticles.clear();
+    (async () => {
+      try {
+        console.log('remove');
+        await this.articleService.remove(this.selectedArticles);
+        this.selectedArticles.clear();
+      } catch (err) {
+        console.log('err: ', err);
+      }
+    })();
   }
 
   toggle(a: Article) {

@@ -46,4 +46,30 @@ export class HttpArticleService extends ArticleService {
         },
       });
   }
+
+  override async remove(articles: Set<Article>): Promise<void> {
+    await super.remove(articles);
+    console.log('articles: ', articles);
+    const ids = [...articles].map((a) => a.id);
+    console.log('ids: ', ids);
+    this.http
+      .delete<void>('http://localhost:3000/api/articles', {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(ids),
+      })
+      .subscribe({
+        next: () => {
+          console.log('next');
+          this.refresh();
+        },
+        error: (err) => {
+          console.log('err: ', err);
+        },
+        complete: () => {
+          console.log('complete');
+        },
+      });
+  }
 }
