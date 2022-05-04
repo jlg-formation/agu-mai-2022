@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   faPlus,
   faRotateRight,
@@ -12,15 +12,13 @@ import { ArticleService } from '../services/article.service';
   templateUrl: './stock.component.html',
   styleUrls: ['./stock.component.scss'],
 })
-export class StockComponent implements OnInit {
+export class StockComponent {
   faPlus = faPlus;
   faRotateRight = faRotateRight;
   faTrashCan = faTrashCan;
   selectedArticles = new Set<Article>();
 
   constructor(public articleService: ArticleService) {}
-
-  ngOnInit(): void {}
 
   refresh() {
     console.log('refresh');
