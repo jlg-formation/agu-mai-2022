@@ -37,24 +37,17 @@ export class HttpArticleService extends ArticleService {
     console.log('articles: ', articles);
     const ids = [...articles].map((a) => a.id);
     console.log('ids: ', ids);
-    this.http
-      .delete<void>('/api/articles', {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(ids),
-      })
-      .subscribe({
-        next: () => {
-          console.log('next');
-          this.refresh();
-        },
-        error: (err) => {
-          console.log('err: ', err);
-        },
-        complete: () => {
-          console.log('complete');
-        },
-      });
+    lastValueFrom(
+      this.http
+        .delete<void>('/api/articles', {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(ids),
+        })
+        .pipe(delay(10))
+    );
+    console.log('next');
+    await this.refresh();
   }
 }
