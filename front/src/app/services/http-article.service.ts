@@ -19,8 +19,7 @@ export class HttpArticleService extends ArticleService {
     const articles = await lastValueFrom(
       this.http.get<Article[]>('/api/articles').pipe(timeout(5000), delay(2000))
     );
-    this.articles = articles;
-    this.save();
+    this.articles$.next(articles);
   }
 
   override async add(article: Article): Promise<void> {

@@ -1,17 +1,22 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { Article } from '../interfaces/article';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ArticleService {
-  articles = this.getArticles();
+  articles$ = new BehaviorSubject<Article[]>(this.getArticles());
 
-  constructor() {}
+  constructor() {
+    this.articles$.subscribe((articles) => {
+      localStorage.setItem('articles', JSON.stringify(articles));
+    });
+  }
 
   async add(article: Article) {
-    this.articles.push(article);
-    this.save();
+    this.articles$.value.push(article);
+    this.articles$.next(this.articles$.value);
   }
 
   getArticles(): Article[] {
@@ -44,12 +49,7 @@ export class ArticleService {
   }
 
   async remove(articles: Set<Article>) {
-    this.articles = this.articles.filter((a) => !articles.has(a));
-    this.save();
-  }
-
-  save() {
-    localStorage.setItem('articles', JSON.stringify(this.articles));
+    this.articles$.next(this.articles$.value.filter((a) => !articles.has(a)));
   }
 
   async refresh() {}
