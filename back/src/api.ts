@@ -26,6 +26,12 @@ let articles: Article[] = [
 
 export const apiRouter = Router();
 
+apiRouter.get("/crash", () => {
+  (async () => {
+    throw new Error("oups... crashed.");
+  })();
+});
+
 apiRouter.get("/date", (_req, res) => {
   res.json({ date: new Date() });
 });
