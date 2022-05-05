@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ArticleService } from './article.service';
 import { Article } from '../interfaces/article';
+import { delay, lastValueFrom, timeout } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -14,36 +15,31 @@ export class HttpArticleService extends ArticleService {
   }
 
   override async refresh() {
-    super.refresh();
-    this.http.get<Article[]>('/api/articles').subscribe({
-      next: (articles) => {
-        console.log('next', articles);
-        this.articles = articles;
-        this.save();
-      },
-      error: (err) => {
-        console.log('err: ', err);
-      },
-      complete: () => {
-        console.log('complete');
-      },
-    });
+    await super.refresh();
+    const articles = await lastValueFrom(
+      this.http.get<Article[]>('/api/articles').pipe(timeout(5000), delay(2000))
+    );
+    this.articles = articles;
+    this.save();
   }
 
   override async add(article: Article): Promise<void> {
     await super.add(article);
-    this.http.post<void>('/api/articles', article).subscribe({
-      next: () => {
-        console.log('next');
-        this.refresh();
-      },
-      error: (err) => {
-        console.log('err: ', err);
-      },
-      complete: () => {
-        console.log('complete');
-      },
-    });
+    this.http
+      .post<void>('/api/articles', article)
+      .pipe(delay(2000))
+      .subscribe({
+        next: () => {
+          console.log('next');
+          this.refresh();
+        },
+        error: (err) => {
+          console.log('err: ', err);
+        },
+        complete: () => {
+          console.log('complete');
+        },
+      });
   }
 
   override async remove(articles: Set<Article>): Promise<void> {

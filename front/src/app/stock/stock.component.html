@@ -2,8 +2,12 @@
   <h1>Liste des articles</h1>
   <div class="content">
     <nav>
-      <button aria-label="Raffraichir" (click)="refresh()">
-        <fa-icon [icon]="faRotateRight"></fa-icon>
+      <button
+        aria-label="Raffraichir"
+        (click)="refresh()"
+        [disabled]="isRefreshing"
+      >
+        <fa-icon [icon]="faRotateRight" [spin]="isRefreshing"></fa-icon>
       </button>
       <button routerLink="add" aria-label="Ajouter">
         <fa-icon [icon]="faPlus"></fa-icon>

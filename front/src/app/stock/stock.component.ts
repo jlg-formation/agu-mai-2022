@@ -17,12 +17,20 @@ export class StockComponent {
   faRotateRight = faRotateRight;
   faTrashCan = faTrashCan;
   selectedArticles = new Set<Article>();
+  isRefreshing = false;
 
   constructor(public articleService: ArticleService) {}
 
-  refresh() {
-    console.log('refresh');
-    this.articleService.refresh();
+  async refresh() {
+    try {
+      console.log('refresh');
+      this.isRefreshing = true;
+      await this.articleService.refresh();
+    } catch (err) {
+      console.log('err: ', err);
+    } finally {
+      this.isRefreshing = false;
+    }
   }
 
   remove() {
