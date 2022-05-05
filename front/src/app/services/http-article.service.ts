@@ -17,7 +17,7 @@ export class HttpArticleService extends ArticleService {
   override async refresh() {
     await super.refresh();
     const articles = await lastValueFrom(
-      this.http.get<Article[]>('/api/articles').pipe(timeout(5000), delay(2000))
+      this.http.get<Article[]>('/api/articles').pipe(timeout(5000), delay(10))
     );
     this.articles$.next(articles);
   }

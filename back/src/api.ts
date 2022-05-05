@@ -1,5 +1,14 @@
 import { Router, json } from "express";
 import { Article } from "./interfaces/article";
+import {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  promises,
+  writeFileSync,
+} from "fs";
+import { BehaviorSubject, debounceTime } from "rxjs";
+import { dirname } from "path";
 
 const noop = () => {};
 
@@ -9,20 +18,33 @@ const generateId = () => {
   return Date.now() + "_" + Math.round(Math.random() * 1e9);
 };
 
-let articles: Article[] = [
-  {
-    id: "1",
-    name: "truc",
-    price: 2.45,
-    qty: 456,
-  },
-  {
-    id: "2",
-    name: "bidule",
-    price: 2.45,
-    qty: 456,
-  },
-];
+const ARTICLE_FILENAME = "data/articles.json";
+
+const init = () => {
+  try {
+    mkdirSync(dirname(ARTICLE_FILENAME), { recursive: true });
+    if (!existsSync(ARTICLE_FILENAME)) {
+      writeFileSync(ARTICLE_FILENAME, "[]");
+    }
+    const articles = JSON.parse(
+      readFileSync(ARTICLE_FILENAME, { encoding: "utf-8" })
+    );
+    articles$.next(articles);
+
+    articles$.pipe(debounceTime(2000)).subscribe((articles) => {
+      (async () => {
+        const str = JSON.stringify(articles, undefined, 2);
+        await promises.writeFile(ARTICLE_FILENAME, str);
+      })();
+    });
+  } catch (err) {
+    console.log("err: ", err);
+  }
+};
+
+const articles$ = new BehaviorSubject<Article[]>([]);
+
+init();
 
 export const apiRouter = Router();
 
@@ -37,7 +59,7 @@ apiRouter.get("/date", (_req, res) => {
 });
 
 apiRouter.get("/articles", (_req, res) => {
-  res.json(articles);
+  res.json(articles$.value);
 });
 
 apiRouter.use(json());
@@ -48,7 +70,8 @@ apiRouter.post("/articles", (req, res) => {
       const article = req.body;
       article.id = generateId();
       console.log("article: ", article);
-      articles.push(article);
+      articles$.value.push(article);
+      articles$.next(articles$.value);
       res.status(201).end();
     } catch (err) {
       console.log("err: ", err);
@@ -62,7 +85,7 @@ apiRouter.delete("/articles", (req, res) => {
     try {
       const ids = req.body as string[];
       console.log("ids: ", ids);
-      articles = articles.filter((a) => !ids.includes(a.id));
+      articles$.next(articles$.value.filter((a) => !ids.includes(a.id)));
       res.status(204).end();
     } catch (err) {
       console.log("err: ", err);
