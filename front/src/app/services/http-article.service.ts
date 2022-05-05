@@ -14,6 +14,7 @@ export class HttpArticleService extends ArticleService {
   }
 
   override async refresh() {
+    super.refresh();
     this.http.get<Article[]>('/api/articles').subscribe({
       next: (articles) => {
         console.log('next', articles);
