@@ -3,7 +3,11 @@ import {
   HttpTestingController,
 } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { articleToAdd, articleToRemove } from 'src/test/articles.fixture';
+import {
+  articleToAdd,
+  articleToRemove,
+  testArticles,
+} from 'src/test/articles.fixture';
 import { Article } from '../interfaces/article';
 
 import { HttpArticleService } from './http-article.service';
@@ -73,6 +77,7 @@ describe('HttpArticleService', () => {
     expect(req.request.method).toBe('GET');
     req.flush([]);
 
+    service.articles = testArticles;
     await service.remove(new Set<Article>([articleToRemove]));
     req = http.expectOne('/api/articles');
     expect(req.request.method).toBe('DELETE');
