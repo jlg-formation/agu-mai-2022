@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { articleToAdd } from 'src/test/articles.fixture';
 import { WidgetModule } from '../widget/widget.module';
 
 import { StockComponent } from './stock.component';
@@ -21,6 +22,9 @@ describe('StockComponent', () => {
   });
 
   it('should create', () => {
+    component.refresh();
+    component.remove();
+    component.toggle(articleToAdd);
     expect(component).toBeTruthy();
   });
 });
